@@ -1,4 +1,4 @@
-function complexData = udpReceiverRead(udpReceiver, receiveBufferSize)
+function complexData = udpSamplesReceiverRead(udpReceiver, receiveBufferSize)
 	%#codegen
 	if coder.target('MATLAB')
 		complexData 	= udpReceiver();
