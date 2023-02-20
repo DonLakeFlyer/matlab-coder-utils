@@ -96,7 +96,7 @@ void udpReceiverClear(int fdSocket)
     }
 }
 
-int udpSenderSend(int fdSocket, , uint8_t* bytes, int cBytes)
+int udpSenderSend(int fdSocket, uint8_T* bytes, int cBytes)
 {
     return send(fdSocket, bytes, cBytes, 0);
 }
