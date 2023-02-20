@@ -1,6 +1,6 @@
 function bytes = structToBytes(myStruct)
 
-bytes = uint8.empty;
+bytes = [];
 
 structFieldNames = fieldnames(myStruct);
 for i = 1 : numel(structFieldNames)
