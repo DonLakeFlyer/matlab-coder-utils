@@ -57,9 +57,9 @@ int udpSenderSetup(int ipPort)
     return fdSocket;
 }
 
-void udpReceiverRead(int fdSocket, creal32_T* complexBuffer, int bufferSize)
+void udpReceiverReadComplex(int fdSocket, creal32_T* complexBuffer, int cComplex)
 {
-    int cBytesLeft = bufferSize * sizeof(creal32_T);
+    int cBytesLeft = cComplex * sizeof(creal32_T);
     uint8_T* writePtr = (uint8_T*)&complexBuffer[0];
 
     while (cBytesLeft) {
@@ -73,7 +73,28 @@ void udpReceiverRead(int fdSocket, creal32_T* complexBuffer, int bufferSize)
             cBytesLeft -= cBytesRead;
             writePtr += cBytesRead;
         } else {
-            printf("Error udpReceiverRead: %s\n", strerror(errno));
+            printf("Error udpReceiverReadComplex: %s\n", strerror(errno));
+        }
+    }
+}
+
+void udpReceiverReadBytes(int fdSocket, uint8_T* bytes, int cBytes)
+{
+    int cBytesLeft = cBytes;
+    uint8_T* writePtr = (uint8_T*)&bytes[0];
+
+    while (cBytesLeft) {
+        int cBytesRead = recvfrom(
+                            fdSocket, 
+                            writePtr, cBytesLeft, 
+                            0, 
+                            (struct sockaddr *)NULL, 
+                            NULL);
+        if (cBytesRead > 0) {
+            cBytesLeft -= cBytesRead;
+            writePtr += cBytesRead;
+        } else {
+            printf("Error udpReceiverReadBytes: %s\n", strerror(errno));
         }
     }
 }
