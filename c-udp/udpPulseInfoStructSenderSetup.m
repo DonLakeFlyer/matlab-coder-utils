@@ -1,11 +1,11 @@
-function udpSender = udpPulseSenderSetup(ipAddress, ipPort)
+function udpSender = udpPulseInfoStructSenderSetup(ipAddress, ipPort)
 	%#codegen
 	if coder.target('MATLAB')
-        sendBufferSize = numel(structToBytes(createPulseInfoStruct()));
+        sendBufferSize = numel(PulseInfoStruct().toBytes());
 		udpSender = dsp.UDPSender( ...
-									'RemoteIPAddress', 		ipAddress, ...
-							    	'RemoteIPPort',			ipPort, ...
-							    	'SendBufferSize',		sendBufferSize);
+					        'RemoteIPAddress', 		ipAddress, ...
+			    	        'RemoteIPPort',			ipPort, ...
+			    	        'SendBufferSize',		sendBufferSize);
 	else
 		coder.cinclude('udp.h');
 		coder.updateBuildInfo('addSourceFiles', 'udp.cpp');
