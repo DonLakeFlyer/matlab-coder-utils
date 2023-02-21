@@ -31,8 +31,9 @@ classdef PulseInfoStruct < handle
             else
                 coder.cinclude('udp.h');
                 coder.updateBuildInfo('addSourceFiles', 'udp.cpp');
-                self.udpSender = int32(0);
-                self.udpSender = coder.ceval('udpSenderSetup', ipPort);
+                udpSender = int32(0);
+                udpSender = coder.ceval('udpSenderSetup', ipPort);
+                self.udpSender = udpSender;
                 if self.udpSender <= 0
                     error('udpSenderSetup failed');
                 end
@@ -53,8 +54,9 @@ classdef PulseInfoStruct < handle
             else
                 coder.cinclude('udp.h');
                 coder.updateBuildInfo('addSourceFiles', 'udp.cpp');
-                self.udpReceiver = int32(0);
-                self.udpReceiver = coder.ceval('udpReceiverSetup', ipPort);
+                udpReceiver = int32(0);
+                udpReceiver = coder.ceval('udpReceiverSetup', ipPort);
+                self.udpReceiver = udpReceiver;
                 if self.udpReceiver <= 0
                     error('udpReceiverSetup failed');
                 end
@@ -127,36 +129,12 @@ classdef PulseInfoStruct < handle
                         confirmed_status_bytes ...
                         ];
         end
-
-        function fromBytes(self, bytes)
-            tag_id_bytes                        = typecast(self.tag_id,                     "uint8");
-            frequency_hz_bytes                  = typecast(self.frequency_hz,               "uint8");
-            start_time_seconds_bytes            = typecast(self.start_time_seconds,         "uint8");
-            predict_next_start_seconds_bytes    = typecast(self.predict_next_start_seconds, "uint8");
-            snr_bytes                           = typecast(self.snr,                        "uint8");
-            stft_score_bytes                    = typecast(self.stft_score,                        "uint8");
-            group_ind_bytes                     = typecast(self.group_ind,                  "uint8");
-            group_snr_bytes                     = typecast(self.group_snr,                  "uint8");
-            detection_status_bytes              = typecast(self.detection_status,           "uint8");
-            confirmed_status_bytes              = typecast(self.confirmed_status,           "uint8");
-            bytes = [ tag_id_bytes ...
-                        frequency_hz_bytes ...  
-                        start_time_seconds_bytes ...
-                        predict_next_start_seconds_bytes ...
-                        snr_bytes ...
-                        stft_score_bytes ...
-                        group_ind_bytes ...
-                        group_snr_bytes ...
-                        detection_status_bytes ...
-                        confirmed_status_bytes ...
-                        ];
-        end
     end
 
     methods(Static)
         function cBytes = byteCount()
-            testStruct = PulseInfoStruct()
-            cBytes = numel(testStruct.toBytes())
+            testStruct = PulseInfoStruct();
+            cBytes = numel(testStruct.toBytes());
         end
     end
 end
