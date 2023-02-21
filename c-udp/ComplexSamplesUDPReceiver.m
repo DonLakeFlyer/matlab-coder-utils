@@ -5,7 +5,7 @@ classdef ComplexSamplesUDPReceiver
     end
 
     methods
-        function self = ComplexSampleUDPReceiver(ipPort, samplesPerFrame)
+        function self = ComplexSampleUDPReceiver(ipAddress, ipPort, samplesPerFrame)
             self.bufferSizeBytes = samplesPerFrame * 2 * 4; % Two floats = 2 * 4 bytes;
             if coder.target('MATLAB')
                 self.udpReceiver = dsp.UDPReceiver( ...
