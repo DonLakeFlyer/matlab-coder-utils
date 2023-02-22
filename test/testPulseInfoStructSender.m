@@ -6,7 +6,7 @@ function testPulseInfoStructSender()
 
     pulseInfoStruct.udpSenderSetup('127.0.0.1', 10000);
 
-    packetCount                                 = 1;
+    packetCount                                 = uint32(1);
     pulseInfoStruct.frequency_hz                = 146000000;
     pulseInfoStruct.start_time_seconds          = 0;
     pulseInfoStruct.predict_next_start_seconds  = 0;
@@ -18,7 +18,7 @@ function testPulseInfoStructSender()
     pulseInfoStruct.confirmed_status            = 0;
 
     while true
-        fprintf("Sending packet %d\n", packetCount);
+        fprintf("Sending packet %ud\n", packetCount);
         pulseInfoStruct.tag_id = packetCount;
         pulseInfoStruct.sendOverUDP();
         packetCount = packetCount + 1;
