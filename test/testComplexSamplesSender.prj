@@ -588,13 +588,13 @@
     <var.DismissScreener>false</var.DismissScreener>
     <param.unifiedParamStorage />
     <param.hdlParamStorage />
-    <var.gc.lastOutputRoot>codegen\exe\testComplexSamplesSender</var.gc.lastOutputRoot>
-    <var.gc.lastOutputType>EXECUTABLE</var.gc.lastOutputType>
-    <var.gc.preBuildChecksum>3382422008</var.gc.preBuildChecksum>
+    <var.gc.lastOutputRoot />
+    <var.gc.lastOutputType />
+    <var.gc.preBuildChecksum>3679918145</var.gc.preBuildChecksum>
     <var.cfi.lastOutputRoot />
     <var.cfi.preBuildChecksum />
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;H:\repos\matlab-coder-utils\c-udp\ComplexSingleSamplesUDPSender.m&lt;/file&gt;&lt;file&gt;H:\repos\matlab-coder-utils\c-udp\udpRelease.m&lt;/file&gt;&lt;file&gt;H:\repos\matlab-coder-utils\test\testComplexSamplesSender.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;1431633680&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;H:\repos\matlab-coder-utils\c-udp\ComplexSingleSamplesUDPSender.m&lt;/file&gt;&lt;file&gt;H:\repos\matlab-coder-utils\c-udp\udpRelease.m&lt;/file&gt;&lt;file&gt;H:\repos\matlab-coder-utils\test\testComplexSamplesSender.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;3133053047&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
     <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;H:\repos\matlab-coder-utils\c-udp\ComplexSingleSamplesUDPSender.m&lt;/file&gt;&lt;file&gt;H:\repos\matlab-coder-utils\c-udp\udpRelease.m&lt;/file&gt;&lt;file&gt;H:\repos\matlab-coder-utils\test\testComplexSamplesSender.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.NoDefaultJIT>false</param.NoDefaultJIT>
@@ -735,6 +735,8 @@
       <var.DismissScreener />
       <param.unifiedParamStorage />
       <param.hdlParamStorage />
+      <var.gc.lastOutputRoot />
+      <var.gc.lastOutputType />
       <var.cfi.lastOutputRoot />
       <var.cfi.preBuildChecksum />
       <var.outdatedOnRestore />
