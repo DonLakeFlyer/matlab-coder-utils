@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2021a">
-  <configuration build-checksum="2490882312" file="H:\repos\matlab-coder-utils\test\testPulseInfoStructSender.prj" location="H:\repos\matlab-coder-utils\test" name="testPulseInfoStructSender" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="3304876254" file="H:\repos\matlab-coder-utils\test\testComplexSamplesReceiver.prj" location="H:\repos\matlab-coder-utils\test" name="testComplexSamplesReceiver" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
       <param.BuiltInstrumentedMex />
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
@@ -565,7 +565,7 @@
     <param.TestSnippets />
     <param.ExternalFcnMajority>column</param.ExternalFcnMajority>
     <param.UseGlobals>option.UseGlobals.No</param.UseGlobals>
-    <param.outputfile>${PROJECT_ROOT}\codegen\exe\testPulseInfoStructSender\testPulseInfoStructSender.exe</param.outputfile>
+    <param.outputfile>${PROJECT_ROOT}\codegen\exe\testComplexSamplesReceiver\testComplexSamplesReceiver.exe</param.outputfile>
     <param.version>R2012a</param.version>
     <param.HasECoderFeatures>true</param.HasECoderFeatures>
     <param.HasGpuCoder>true</param.HasGpuCoder>
@@ -588,14 +588,14 @@
     <var.DismissScreener>false</var.DismissScreener>
     <param.unifiedParamStorage />
     <param.hdlParamStorage />
-    <var.gc.lastOutputRoot>codegen\exe\testPulseInfoStructSender</var.gc.lastOutputRoot>
+    <var.gc.lastOutputRoot>codegen\exe\testComplexSamplesReceiver</var.gc.lastOutputRoot>
     <var.gc.lastOutputType>EXECUTABLE</var.gc.lastOutputType>
-    <var.gc.preBuildChecksum>2490882312</var.gc.preBuildChecksum>
+    <var.gc.preBuildChecksum>3304876254</var.gc.preBuildChecksum>
     <var.cfi.lastOutputRoot />
     <var.cfi.preBuildChecksum />
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;H:\repos\matlab-coder-utils\c-udp\PulseInfoStruct.m&lt;/file&gt;&lt;file&gt;H:\repos\matlab-coder-utils\test\testPulseInfoStructSender.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;4234587977&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
-    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;H:\repos\matlab-coder-utils\c-udp\PulseInfoStruct.m&lt;/file&gt;&lt;file&gt;H:\repos\matlab-coder-utils\test\testPulseInfoStructSender.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;H:\repos\matlab-coder-utils\c-udp\ComplexSingleSamplesUDPReceiver.m&lt;/file&gt;&lt;file&gt;H:\repos\matlab-coder-utils\c-udp\udpRelease.m&lt;/file&gt;&lt;file&gt;H:\repos\matlab-coder-utils\test\testComplexSamplesReceiver.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;3471798985&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;H:\repos\matlab-coder-utils\c-udp\ComplexSingleSamplesUDPReceiver.m&lt;/file&gt;&lt;file&gt;H:\repos\matlab-coder-utils\test\testComplexSamplesReceiver.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.NoDefaultJIT>false</param.NoDefaultJIT>
     <param.configImportActive>false</param.configImportActive>
@@ -609,10 +609,10 @@
     <param.EnableStructExplosion>true</param.EnableStructExplosion>
     <param.ForceANSIC>false</param.ForceANSIC>
     <param.NumCompileJobs>1</param.NumCompileJobs>
-    <param.mex.outputfile>testPulseInfoStructSender_mex</param.mex.outputfile>
-    <param.grt.outputfile>testPulseInfoStructSender</param.grt.outputfile>
+    <param.mex.outputfile>testComplexSamplesReceiver_mex</param.mex.outputfile>
+    <param.grt.outputfile>testComplexSamplesReceiver</param.grt.outputfile>
     <param.artifact>option.target.artifact.exe</param.artifact>
-    <param.outputfile>${PROJECT_ROOT}\codegen\exe\testPulseInfoStructSender\testPulseInfoStructSender.exe</param.outputfile>
+    <param.outputfile>${PROJECT_ROOT}\codegen\exe\testComplexSamplesReceiver\testComplexSamplesReceiver.exe</param.outputfile>
     <param.CppNamespace />
     <param.CppPackagesToNamespaces>true</param.CppPackagesToNamespaces>
     <param.CppNamespaceForMathworksCode>coder</param.CppNamespaceForMathworksCode>
@@ -845,14 +845,14 @@
       <param.FixedPointUseDesignRanges />
     </unset>
     <fileset.entrypoints>
-      <file custom-data-expanded="false" value="${PROJECT_ROOT}\testPulseInfoStructSender.m" />
+      <file custom-data-expanded="false" value="${PROJECT_ROOT}\testComplexSamplesReceiver.m" />
     </fileset.entrypoints>
     <fileset.testbench />
     <fileset.inputtypes>
-      <file>${PROJECT_ROOT}\testPulseInfoStructSender.m</file>
+      <file>${PROJECT_ROOT}\testComplexSamplesReceiver.m</file>
     </fileset.inputtypes>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\codegen\exe\testPulseInfoStructSender" name="testPulseInfoStructSender.exe" optional="false">H:\repos\matlab-coder-utils\test\codegen\exe\testPulseInfoStructSender\testPulseInfoStructSender.exe</file>
+      <file location="${PROJECT_ROOT}\codegen\exe\testComplexSamplesReceiver" name="testComplexSamplesReceiver.exe" optional="false">H:\repos\matlab-coder-utils\test\codegen\exe\testComplexSamplesReceiver\testComplexSamplesReceiver.exe</file>
     </build-deliverables>
     <workflow />
     <matlab>

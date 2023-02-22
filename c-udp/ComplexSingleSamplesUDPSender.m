@@ -28,7 +28,7 @@ classdef ComplexSingleSamplesUDPSender
             if coder.target('MATLAB')
                 self.udpSender(complexData);
             else
-                assert(numel(complexData) == self.samplePerFrame);
+                assert(numel(complexData) == self.samplesPerFrame);
                 coder.cinclude('udp.h');
                 coder.updateBuildInfo('addSourceFiles', 'udp.cpp');
                 coder.ceval('udpSenderSendComplex', self.udpSender, coder.wref(complexData), self.samplesPerFrame);
