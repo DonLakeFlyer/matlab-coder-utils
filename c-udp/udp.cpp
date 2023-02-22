@@ -81,7 +81,7 @@ void udpReceiverReadComplex(int fdSocket, creal32_T* complexBuffer, int cComplex
 void udpReceiverReadDouble(int fdSocket, double* doubleBuffer, int cDouble)
 {
     int         cBytesLeft  = cDouble * sizeof(double);
-    uint8_T*    writePtr    = (uint8_T*)&complexBuffer[0];
+    uint8_T*    writePtr    = (uint8_T*)&doubleBuffer[0];
 
     while (cBytesLeft) {
         int cBytesRead = recvfrom(
@@ -126,14 +126,14 @@ int udpSenderSendComplex(int fdSocket, creal32_T* complexBuffer, int cComplex)
 {
     int cBytes = cComplex * sizeof(creal32_T);
 
-    return udpSenderSendBytes(fdSocket, (uint8_t*)complexBuffer, cBytes, 0);
+    return udpSenderSendBytes(fdSocket, (uint8_t*)complexBuffer, cBytes);
 }
 
 int udpSenderSendDoubles(int fdSocket, double* doubleBuffer, int cDouble)
 {
     int cBytes = cDouble * sizeof(double);
 
-    return udpSenderSendBytes(fdSocket, (uint8_t*)doubleBuffer, cBytes, 0);    
+    return udpSenderSendBytes(fdSocket, (uint8_t*)doubleBuffer, cBytes);    
 }
 
 void udpReceiverSenderRelease(int fdSocket)
