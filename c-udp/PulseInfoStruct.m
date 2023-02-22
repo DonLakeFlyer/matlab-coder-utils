@@ -84,11 +84,10 @@ classdef PulseInfoStruct < handle
 
                 coder.cinclude('udp.h');
                 coder.updateBuildInfo('addSourceFiles', 'udp.cpp');
-                cBytesRead = coder.ceval('udpReceiverReadDoubles', self.udpReceiver, coder.wref(pulseInfoBytes), self.bufferSizeBytes);
+                cBytesRead = coder.ceval('udpReceiverReadDoubles', self.udpReceiver, coder.wref(doublesBuffer), self.cDoubles);
                 assert(cBytesRead == self.cDoubles * 8, ...
                     "PulseInfoStruct:receiveOverUDP byte count mismatch: expected %d actual %d", ...
-                    self.cDoubles * 8, cBytesRead);                
-                doublesBuffer = doublesBuffer(:);
+                    self.cDoubles * 8, cBytesRead);               
             end
             dataAvailable = ~isempty(doublesBuffer);
             if dataAvailable
