@@ -75,7 +75,7 @@ classdef PulseInfoStruct < handle
             else
                 coder.cinclude('udp.h');
                 coder.updateBuildInfo('addSourceFiles', 'udp.cpp');
-                coder.ceval('udpSenderSend', self.udpSender, pulseInfoBytes, self.udpBufferSizeBytes);
+                coder.ceval('udpSenderSendBytes', self.udpSender, pulseInfoBytes, self.udpBufferSizeBytes);
             end
         end
 

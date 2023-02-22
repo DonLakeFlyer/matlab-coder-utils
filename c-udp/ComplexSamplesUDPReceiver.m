@@ -8,7 +8,7 @@ classdef ComplexSamplesUDPReceiver
     methods
         function self = ComplexSamplesUDPReceiver(ipAddress, ipPort, samplesPerFrame)
             self.bufferSizeBytes = samplesPerFrame * 2 * 4; % Two floats = 2 * 4 bytes;
-            self.samplesPerFrame = samplePerFrame;
+            self.samplesPerFrame = samplesPerFrame;
             if coder.target('MATLAB')
                 self.udpReceiver = dsp.UDPReceiver( ...
                                             'RemoteIPAddress',      ipAddress, ...
@@ -38,7 +38,7 @@ classdef ComplexSamplesUDPReceiver
 
                 coder.cinclude('udp.h');
                 coder.updateBuildInfo('addSourceFiles', 'udp.cpp');
-                cComplexRead = coder.ceval('udpReceiverReadComplex', self.udpReceiver, coder.wref(complexBuffer), self.bufferSizeBytes);
+                cComplexRead = coder.ceval('udpReceiverReadComplex', self.udpReceiver, coder.wref(complexBuffer), self.samplesPerFrame);
                 complexData = complexBuffer(:);
             end 
         end
