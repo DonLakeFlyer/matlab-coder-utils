@@ -21,7 +21,7 @@ classdef ComplexSamplesUDPReceiver
                 coder.updateBuildInfo('addSourceFiles', 'udp.cpp');
                 self.udpReceiver = int32(0);
                 self.udpReceiver = coder.ceval('udpReceiverSetup', ipPort);
-                if udpReceiver <= 0
+                if self.udpReceiver <= 0
                     error('udpReceiverSetup failed');
                 end
             end
