@@ -78,10 +78,10 @@ void udpReceiverReadComplex(int fdSocket, creal32_T* complexBuffer, int cComplex
     }
 }
 
-void udpReceiverReadBytes(int fdSocket, uint8_T* bytes, int cBytes)
+void udpReceiverReadDouble(int fdSocket, double* doubleBuffer, int cDouble)
 {
-    int cBytesLeft = cBytes;
-    uint8_T* writePtr = (uint8_T*)&bytes[0];
+    int         cBytesLeft  = cDouble * sizeof(double);
+    uint8_T*    writePtr    = (uint8_T*)&complexBuffer[0];
 
     while (cBytesLeft) {
         int cBytesRead = recvfrom(
@@ -94,9 +94,9 @@ void udpReceiverReadBytes(int fdSocket, uint8_T* bytes, int cBytes)
             cBytesLeft -= cBytesRead;
             writePtr += cBytesRead;
         } else {
-            printf("Error udpReceiverReadBytes: %s\n", strerror(errno));
+            printf("Error udpReceiverReadDouble: %s\n", strerror(errno));
         }
-    }
+    }    
 }
 
 void udpReceiverClear(int fdSocket)
@@ -120,6 +120,20 @@ void udpReceiverClear(int fdSocket)
 int udpSenderSendBytes(int fdSocket, uint8_T* bytes, int cBytes)
 {
     return send(fdSocket, bytes, cBytes, 0);
+}
+
+int udpSenderSendComplex(int fdSocket, creal32_T* complexBuffer, int cComplex)
+{
+    int cBytes = cComplex * sizeof(creal32_T);
+
+    return udpSenderSendBytes(fdSocket, (uint8_t*)complexBuffer, cBytes, 0);
+}
+
+int udpSenderSendDoubles(int fdSocket, double* doubleBuffer, int cDouble)
+{
+    int cBytes = cDouble * sizeof(double);
+
+    return udpSenderSendBytes(fdSocket, (uint8_t*)doubleBuffer, cBytes, 0);    
 }
 
 void udpReceiverSenderRelease(int fdSocket)

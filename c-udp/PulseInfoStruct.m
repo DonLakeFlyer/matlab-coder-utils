@@ -17,17 +17,16 @@ classdef PulseInfoStruct < handle
         confirmed_status            (1, 1) double = NaN;
         udpSender                   (1, 1)
         udpReceiver                 (1, 1)
-        udpBufferSizeBytes          (1, 1)
+        cDoubles                    (1, 1) uint32 = 10;     % Must match the number of double sent/received over udp in a single packet
     end
 
     methods
         function udpSenderSetup(self, ipAddress, ipPort)
             if coder.target('MATLAB')
-                self.udpBufferSizeBytes = numel(PulseInfoStruct().toBytes());
                 self.udpSender = dsp.UDPSender( ...
                                     'RemoteIPAddress',      ipAddress, ...
                                     'RemoteIPPort',         ipPort, ...
-                                    'SendBufferSize',       self.udpBufferSizeBytes);
+                                    'SendBufferSize',       self.cDoubles * 8);
             else
                 coder.cinclude('udp.h');
                 coder.updateBuildInfo('addSourceFiles', 'udp.cpp');
@@ -41,15 +40,17 @@ classdef PulseInfoStruct < handle
         end    
 
         function udpReceiverSetup(self, ipAddress, ipPort)
-            self.udpBufferSizeBytes = numel(PulseInfoStruct().toBytes());
             if coder.target('MATLAB')
+                % For some reason ReceiveBufferSize must be arbitrarily large than the size of the packet received!
+                actualByteCount = self.cDoubles * 8;
+                receiveBufferSize = max(8192, actualByteCount * 2);
                 self.udpReceiver = dsp.UDPReceiver( ...
                                             'RemoteIPAddress',      ipAddress, ...
                                             'LocalIPPort',          ipPort, ...
-                                            'ReceiveBufferSize',    self.udpBufferSizeBytes, ...
-                                            'MaximumMessageLength', self.udpBufferSizeBytes, ...
-                                            'MessageDataType',      'single', ...
-                                            'IsMessageComplex',     true);
+                                            'ReceiveBufferSize',    receiveBufferSize, ...
+                                            'MaximumMessageLength', self.cDoubles, ...
+                                            'MessageDataType',      'double', ...
+                                            'IsMessageComplex',     false);
                 setup(self.udpReceiver);
             else
                 coder.cinclude('udp.h');
@@ -64,77 +65,66 @@ classdef PulseInfoStruct < handle
         end
 
         function sendOverUDP(self)
-            pulseInfoBytes  = self.toBytes();
-            expected        = self.udpBufferSizeBytes;
-            actual          = numel(pulseInfoBytes);
-            assert(expected == actual, ...
-                "PulseInfoStruct:sendOverUDP byte count mismatch: expected %d actual %d", ...
-                expected, actual);
+            doublesBuffer = self.toDoubles();
             if coder.target('MATLAB')
-                self.udpSender(pulseInfoBytes);
+                self.udpSender(doublesBuffer);
             else
                 coder.cinclude('udp.h');
                 coder.updateBuildInfo('addSourceFiles', 'udp.cpp');
-                coder.ceval('udpSenderSendBytes', self.udpSender, pulseInfoBytes, self.udpBufferSizeBytes);
+                coder.ceval('udpSenderSendDoubles', self.udpSender, coder.ref(doublesBuffer), self.cDoubles);
             end
         end
 
-        function receiveOverUDP(self)
+        function dataAvailable = receiveOverUDP(self)
             if coder.target('MATLAB')
-                pulseInfoBytes  = self.udpReceiver();
+                doublesBuffer  = self.udpReceiver();
             else
                 cBytesRead      = int32(0);
-                pulseInfoBytes  = zeros(1, self.udpBufferSizeBytes, 'uint8');
+                doublesBuffer   = zeros(1, self.cDoubles, 'double');
 
                 coder.cinclude('udp.h');
                 coder.updateBuildInfo('addSourceFiles', 'udp.cpp');
-                cBytesRead = coder.ceval('udpReceiverReadBytes', self.udpReceiver, coder.wref(pulseInfoBytes), self.bufferSizeBytes);
-                assert(cBytesRead == self.udpBufferSizeBytes, ...
+                cBytesRead = coder.ceval('udpReceiverReadDoubles', self.udpReceiver, coder.wref(pulseInfoBytes), self.bufferSizeBytes);
+                assert(cBytesRead == self.cDoubles * 8, ...
                     "PulseInfoStruct:receiveOverUDP byte count mismatch: expected %d actual %d", ...
-                    self.udpBufferSizeBytes, cBytesRead);                
-                pulseInfoBytes = pulseInfoBytes(:);
-            end 
-            expected        = self.udpBufferSizeBytes;
-            actual          = numel(pulseInfoBytes);
-            assert(expected == actual, ...
-                "PulseInfoStruct:receiveOverUDP byte count mismatch: expected %d actual %d", ...
-                expected, actual);
-            self.fromBytes(pulseInfoBytes);
+                    self.cDoubles * 8, cBytesRead);                
+                doublesBuffer = doublesBuffer(:);
+            end
+            dataAvailable = ~isempty(doublesBuffer);
+            if dataAvailable
+                self.fromDoubles(doublesBuffer);
+            end
         end
 
         function release(self)
             udpRelease(self.udpSender);
         end
 
-        function bytes = toBytes(self)
-            tag_id_bytes                        = typecast(self.tag_id,                     "uint8");
-            frequency_hz_bytes                  = typecast(self.frequency_hz,               "uint8");
-            start_time_seconds_bytes            = typecast(self.start_time_seconds,         "uint8");
-            predict_next_start_seconds_bytes    = typecast(self.predict_next_start_seconds, "uint8");
-            snr_bytes                           = typecast(self.snr,                        "uint8");
-            stft_score_bytes                    = typecast(self.stft_score,                        "uint8");
-            group_ind_bytes                     = typecast(self.group_ind,                  "uint8");
-            group_snr_bytes                     = typecast(self.group_snr,                  "uint8");
-            detection_status_bytes              = typecast(self.detection_status,           "uint8");
-            confirmed_status_bytes              = typecast(self.confirmed_status,           "uint8");
-            bytes = [ tag_id_bytes ...
-                        frequency_hz_bytes ...  
-                        start_time_seconds_bytes ...
-                        predict_next_start_seconds_bytes ...
-                        snr_bytes ...
-                        stft_score_bytes ...
-                        group_ind_bytes ...
-                        group_snr_bytes ...
-                        detection_status_bytes ...
-                        confirmed_status_bytes ...
-                        ];
+        function doublesBuffer = toDoubles(self)
+            doublesBuffer = [ self.tag_id ...
+                                self.frequency_hz ...
+                                self.start_time_seconds ...
+                                self.predict_next_start_seconds ...
+                                self.snr ...
+                                self.stft_score ...
+                                self.group_ind ...
+                                self.group_snr ...
+                                self.detection_status ...
+                                self.confirmed_status ...
+                            ];
         end
-    end
 
-    methods(Static)
-        function cBytes = byteCount()
-            testStruct = PulseInfoStruct();
-            cBytes = numel(testStruct.toBytes());
+        function fromDoubles(self, doublesBuffer)
+            self.tag_id                      = doublesBuffer(1);
+            self.frequency_hz                = doublesBuffer(2);
+            self.start_time_seconds          = doublesBuffer(3);
+            self.predict_next_start_seconds  = doublesBuffer(4);
+            self.snr                         = doublesBuffer(5);
+            self.stft_score                  = doublesBuffer(6);
+            self.group_ind                   = doublesBuffer(7);
+            self.group_snr                   = doublesBuffer(8);
+            self.detection_status            = doublesBuffer(9);
+            self.confirmed_status            = doublesBuffer(10);
         end
     end
 end

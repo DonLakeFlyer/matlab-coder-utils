@@ -10,9 +10,9 @@ To use the udp support you must do the following:
 * Include matlab-coder-utils repo as a submodule of your matlab code repo.
 * In the Matlab app Set Path to include matlab-coder-util/c-udp
 
-## ComplexSamplesUDPReceiver
+## ComplexSingleSamplesUDPReceiver
 
-This class is meant to be used to receive complex samples from a udp port. 
+This class is meant to be used to receive complex single precision samples from a udp port. 
 
 Example usage:
 
@@ -20,7 +20,7 @@ Example usage:
 % Setup the udp port for receiving
 %   You specify the ip address and port
 %   Last argument is max number of complex samples in a single udp packet
-udpReceiver = ComplexSamplesUDPReceiver("127.0.0.1", 10000, 2048);
+udpReceiver = ComplexSingleSamplesUDPReceiver("127.0.0.1", 10000, 1024);
 
 
 % Read samples from the udp port
@@ -33,6 +33,26 @@ udpRecevier.clear();
 
 % Release the udp port
 udpReceiver.release();
+```
+
+## ComplexSingleSamplesUDPSender
+
+This class is meant to be used to send complex single precision samples from a udp port.
+
+Example usage:
+
+```
+% Setup the udp port for receiving
+%   You specify the ip address and port
+%   Last argument is max number of complex samples in a single udp packet
+udpSender = ComplexSingleSamplesUDPSender("127.0.0.1", 10000, 1024);
+
+
+% Write samples to the udp port
+udpSender.send(complexData);
+
+% Release the udp port
+udpSender.send();
 ```
 
 ## PulseInfoStruct
@@ -57,7 +77,10 @@ pulseInfoStruct.sendOverUDP();
 
 % Setup and receiver pulse over udp
 %   After the receiveOverUDP call the pulseInfoStruct values will be set to what was received
-pulseInfoStruct.udpReceiverSetup("127.0.0.1", 10000);
-pulseIndoStruct.receiveOverUDP();
+%   dataAvailable:
+%       true: data was readm struct values were updated
+%       false: no data currently available, struct was not updated
+dataAvailable = pulseInfoStruct.udpReceiverSetup("127.0.0.1", 10000);
+pulseInfoStruct.receiveOverUDP();
 
 ```

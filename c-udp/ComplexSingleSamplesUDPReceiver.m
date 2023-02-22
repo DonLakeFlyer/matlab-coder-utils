@@ -1,20 +1,21 @@
-classdef ComplexSamplesUDPReceiver
+classdef ComplexSingleSamplesUDPReceiver
     properties
         udpReceiver
-        bufferSizeBytes
         samplesPerFrame
     end
 
     methods
-        function self = ComplexSamplesUDPReceiver(ipAddress, ipPort, samplesPerFrame)
-            self.bufferSizeBytes = samplesPerFrame * 2 * 4; % Two floats = 2 * 4 bytes;
+        function self = ComplexSingleSamplesUDPReceiver(ipAddress, ipPort, samplesPerFrame)
             self.samplesPerFrame = samplesPerFrame;
             if coder.target('MATLAB')
+                % For some reason ReceiveBufferSize must be arbitrarily large than the size of the packet received!
+                actualByteCount = samplesPerFrame * 2 * 4; % Two floats = 2 * 4 bytes;
+                receiveBufferSize = max(8192, actualByteCount * 2);
                 self.udpReceiver = dsp.UDPReceiver( ...
                                             'RemoteIPAddress',      ipAddress, ...
                                             'LocalIPPort',          ipPort, ...
-                                            'ReceiveBufferSize',    self.bufferSizeBytes, ...
-                                            'MaximumMessageLength', samplesPerFrame, ...
+                                            'ReceiveBufferSize',    receiveBufferSize, ...
+                                            'MaximumMessageLength', self.samplesPerFrame, ...
                                             'MessageDataType',      'single', ...
                                             'IsMessageComplex',     true);
                 setup(self.udpReceiver);
@@ -29,7 +30,7 @@ classdef ComplexSamplesUDPReceiver
             end
         end
 
-        function complexData = read(self)
+        function complexData = receive(self)
             if coder.target('MATLAB')
                 complexData     = self.udpReceiver();
             else
