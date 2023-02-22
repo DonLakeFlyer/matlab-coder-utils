@@ -8,11 +8,14 @@ function test()
     actualByteCount = numel(bytes);
     assert(expectedByteCount == actualByteCount, "expected %d actual %d", expectedByteCount, actualByteCount);
 
-    pulseInfoStruct.udpSenderSetup(10000);
-    pulseInfoStruct.udpReceiverSetup(10000);
+    pulseInfoStruct.udpSenderSetup('127.0.0.1', 10000);
+    pulseInfoStruct.udpReceiverSetup('127.0.0.1', 10000);
 
     pulseInfoStruct.tag_id          = 1;
     pulseInfoStruct.frequency_hz    = 146000000;
 
     pulseInfoStruct.sendOverUDP();
+
+    udpReceiver = ComplexSamplesUDPReceiver('127.0.0.1', 20000, 2048);
+    udpReceiver.read();
 end
