@@ -4,6 +4,7 @@ This repo is meant to be used as a submodule for matlab projects. It provides su
 
 * C++ versions of udp code. Without this a codegen of calls to dsp.udpReceiver/udpSender requires a matlab library which is only available on an OS for which matlab has application support. This means that you cannot compile this code on an Arm processor like a Raspberry pi. The C++ udp code in here provides codegen udp support for any posix platform. It is mainly meant to be used by uavrt_detection and airspy_channelize and is tailed to that.
 * Header files for compiling codegen output on any posix platform. This is mainly used by the C++ udp code but should work for any generic codegen output.
+* A makefile which is capable of building matlab codegen source code for a generic posix computer.
 
 To use the udp support you must do the following:
 
