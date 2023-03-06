@@ -11,13 +11,14 @@ classdef PulseInfoStruct < handle
         predict_next_start_seconds  (1, 1) double = NaN
         snr                         (1, 1) double = NaN;
         stft_score                  (1, 1) double = NaN;
+        group_seq_counter           (1, 1) double = NaN;
         group_ind                   (1, 1) double = NaN;
         group_snr                   (1, 1) double = NaN;
         detection_status            (1, 1) double = NaN;
         confirmed_status            (1, 1) double = NaN;
         udpSender                   (1, 1)
         udpReceiver                 (1, 1)
-        cDoubles                    (1, 1) uint32 = 10;     % Must match the number of double sent/received over udp in a single packet
+        cDoubles                    (1, 1) uint32 = 11;     % Must match the number of double sent/received over udp in a single packet
     end
 
     methods
@@ -106,6 +107,7 @@ classdef PulseInfoStruct < handle
                                 self.predict_next_start_seconds ...
                                 self.snr ...
                                 self.stft_score ...
+                                self.group_seq_counter ...
                                 self.group_ind ...
                                 self.group_snr ...
                                 self.detection_status ...
@@ -120,10 +122,11 @@ classdef PulseInfoStruct < handle
             self.predict_next_start_seconds  = doublesBuffer(4);
             self.snr                         = doublesBuffer(5);
             self.stft_score                  = doublesBuffer(6);
-            self.group_ind                   = doublesBuffer(7);
-            self.group_snr                   = doublesBuffer(8);
-            self.detection_status            = doublesBuffer(9);
-            self.confirmed_status            = doublesBuffer(10);
+            self.group_seq_counter           = doublesBuffer(7);
+            self.group_ind                   = doublesBuffer(8);
+            self.group_snr                   = doublesBuffer(9);
+            self.detection_status            = doublesBuffer(10);
+            self.confirmed_status            = doublesBuffer(11);
         end
     end
 end
