@@ -20,6 +20,7 @@ function testPulseInfoStructSender()
     while true
         fprintf("Sending packet %ud\n", packetCount);
         pulseInfoStruct.tag_id = packetCount;
+        pulseInfoStruct.sendHeartbeatOverUDP(2);
         pulseInfoStruct.sendOverUDP();
         packetCount = packetCount + 1;
         pause(0.1);

@@ -138,7 +138,7 @@ DEFINES = $(DEFINES_CUSTOM) $(DEFINES_STANDARD)
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = $(wildcard $(CODEGEN_DIR)/*.cpp) $(wildcard $(CODEGEN_DIR)/*.c) $(wildcard $(CODEGEN_DIR)/examples/*.cpp) $(wildcard $(ROOT_DIR)/*.cpp) $(wildcard $(CODER_UTILS)/c-udp/*.cpp)
+SRCS = $(wildcard $(CODEGEN_DIR)/*.cpp) $(wildcard $(CODEGEN_DIR)/*.c) $(wildcard $(CODEGEN_DIR)/examples/*.cpp) $(wildcard $(ROOT_DIR)/*.c) $(wildcard $(ROOT_DIR)/*.cpp) $(wildcard $(CODER_UTILS)/c-udp/*.cpp)
 
 ALL_SRCS = $(SRCS)
 
