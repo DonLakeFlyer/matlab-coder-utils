@@ -16,10 +16,10 @@ classdef PulseInfoStruct < handle
         group_snr                   (1, 1) double = NaN;
         detection_status            (1, 1) double = NaN;
         confirmed_status            (1, 1) double = NaN;
+        noise_psd                   (1, 1) double = NaN;
         udpSender                   (1, 1)
         udpReceiver                 (1, 1)
-        cDoubles                    (1, 1) uint32 = 11;     % Must match the number of double sent/received over udp in a single packet
-        noise_psd                   (1, 1) double = NaN;
+        cDoubles                    (1, 1) uint32 = 12;     % Must match the number of double sent/received over udp in a single packet
     end
 
     methods
