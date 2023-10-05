@@ -1,4 +1,4 @@
-/* Copyright 2017 The MathWorks, Inc. */
+/* Copyright 2017-2022 The MathWorks, Inc. */
 
 #ifndef CPPSHAREDLIB_API_HPP
 #define CPPSHAREDLIB_API_HPP
@@ -11,8 +11,8 @@
 */
 CPP_RUNTIME_C_API void runtime_create_session(char16_t** options, size_t size);
 CPP_RUNTIME_C_API void runtime_terminate_session();
-CPP_RUNTIME_C_API uint64_t create_mvm_instance_async(const char16_t* name);
-CPP_RUNTIME_C_API uint64_t create_mvm_instance(const char16_t* name, bool* errFlag);
+CPP_RUNTIME_C_API uint64_t create_mvm_instance_async(const char16_t* name, const char16_t* session_key);
+CPP_RUNTIME_C_API uint64_t create_mvm_instance(const char16_t* name, const char16_t* session_key, bool* errFlag);
 CPP_RUNTIME_C_API void terminate_mvm_instance(const uint64_t mvmHandle);
 CPP_RUNTIME_C_API void wait_for_figures_to_close(const uint64_t mvmHandle);
 

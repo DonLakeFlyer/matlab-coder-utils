@@ -54,8 +54,8 @@ typedef struct mxGPUArray_tag mxGPUArray;
 /*
  * MATLAB INTERNAL USE ONLY :: MEX Version
  */
-#define EMLRT_VERSION_R2022B 0x2022B
-#define EMLRT_VERSION_INFO EMLRT_VERSION_R2022B
+#define EMLRT_VERSION_R2023B 0x2023B
+#define EMLRT_VERSION_INFO EMLRT_VERSION_R2023B
 
 /*
  * MATLAB INTERNAL USE ONLY :: Thread local context type
@@ -177,7 +177,7 @@ typedef struct emlrtECInfo {
 /*
  * MATLAB INTERNAL USE ONLY :: Array bounds check parameters
  */
-typedef struct {
+typedef struct emlrtRTEInfo {
     int32_T lineNo;
     int32_T colNo;
     const char* fName;
@@ -188,6 +188,18 @@ typedef emlrtRTEInfo emlrtMCInfo;
 
 /* MATLAB INTERNAL USE ONLY :: Reference to global runtime context */
 extern emlrtContext emlrtContextGlobal;
+
+EXTERN_C LIBEMLRT_API mxArray* emlrtAllocateClassEntryPointMx(emlrtCTX aTLS, uint32_T aClassIndex);
+
+EXTERN_C LIBEMLRT_API void* emlrtExtractClassEntryPointInstance(emlrtCTX aTLS,
+                                                                uint32_T aClassIndex,
+                                                                const mxArray* aClassMx);
+
+EXTERN_C LIBEMLRT_API boolean_T emlrtIsCoderlibClassEntryPoint(emlrtCTX aTLS,
+                                                               uint32_T aClassIndex,
+                                                               const mxArray* aClassMx);
+
+EXTERN_C LIBEMLRT_API void emlrtClassEntryPointAtExit(emlrtCTX aTLS);
 
 /*
  * MATLAB INTERNAL USE ONLY :: Dispatch to mexPrintf
@@ -1444,7 +1456,8 @@ EXTERN_C LIBEMLRT_API void emlrtImportArrayR2015b_SameComplex(emlrtConstCTX aTLS
 /*
  * MATLAB INTERNAL USE ONLY :: Import a FI mxArray
  */
-EXTERN_C LIBEMLRT_API void emlrtImportVsFiArrayR2011b(const mxArray* aFiMx,
+EXTERN_C LIBEMLRT_API void emlrtImportVsFiArrayR2023a(emlrtConstCTX aTLS,
+                                                      const mxArray* aFiMx,
                                                       const mxArray* aIntMx,
                                                       void* aOutData,
                                                       int32_T aElementSize,
@@ -1716,6 +1729,8 @@ EXTERN_C LIBEMLRT_API void* emlrtMxCalloc(size_t numEl, size_t elSize);
 EXTERN_C LIBEMLRT_API void emlrtMxFree(void* in);
 
 EXTERN_C LIBEMLRT_API mxArray* emlrtMxCreateString(const char* aStr);
+
+EXTERN_C LIBEMLRT_API mxArray* emlrtMxCreateRowVectorUINT8(const uint8_T* aArray, uint32_T aSize);
 
 EXTERN_C LIBEMLRT_API mxArray* emlrtMxCreateDoubleScalar(double v);
 

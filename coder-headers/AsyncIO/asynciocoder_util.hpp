@@ -1,14 +1,14 @@
 /**
  * @file    asynciocoder_util.hpp
  * @details export/import switch
- * @Copyright 2018 The MathWorks, Inc.
+ * @Copyright 2018-2023 The MathWorks, Inc.
  */
 #ifdef SUPPORTS_PRAGMA_ONCE
 #pragma once
 #endif
 
-#ifndef _ASYNCIOCODER_UTIL_HPP_
-#define _ASYNCIOCODER_UTIL_HPP_
+#ifndef ASYNCIOCODER_UTIL_HPP
+#define ASYNCIOCODER_UTIL_HPP
 
 #ifdef BUILDING_ASYNCIOCODER
 /* For DLL_EXPORT_SYM and EXTERN_C */

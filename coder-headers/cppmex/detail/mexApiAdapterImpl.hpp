@@ -11,6 +11,7 @@
 #include <iostream>
 #include "assert.h"
 #include "../mexMatlabEngine.hpp"
+#include "../mexFuture.hpp"
 
 LIBMWMEX_API_EXTERN_C{
 
@@ -616,7 +617,7 @@ matlab::engine::FutureResult<ReturnType> matlab::engine::MATLABEngine::fevalAsyn
     // auto convertToResultType = [copyableF = std::move(f)]()->ReturnType { ....... };
     auto copyableF = std::make_shared<FutureResult<std::vector<matlab::data::Array>>>(std::move(f));
     auto convertToResultType = [copyableF]() ->ReturnType {
-        std::vector<matlab::data::Array> vec = copyableF->get();
+        std::vector<matlab::data::Array> vec = copyableF->future.get();
         detail::createLhs<ReturnType> lhsFactory;
         return lhsFactory(std::move(vec));
     };

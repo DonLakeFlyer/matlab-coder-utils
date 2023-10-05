@@ -1,4 +1,4 @@
-/* Copyright 2012-2021 The MathWorks, Inc. */
+/* Copyright 2012-2022 The MathWorks, Inc. */
 
 #ifndef ASYNCIO_QUEUE_CAPI_H
 #define ASYNCIO_QUEUE_CAPI_H
@@ -28,6 +28,7 @@ ASYNCIOQUEUE_EXPORT_EXTERN_C void sdiInitializeForHostBasedTarget(
     const char * sdrFileName,
     const char * logOptsFileName,
     boolean_T bLiveStream,
+    boolean_T bIsDeployed,
     const char * sdrFileIndex);
 
 ASYNCIOQUEUE_EXPORT_EXTERN_C void sdiInitializeLogIntervalsForHostBasedTarget(
@@ -42,6 +43,10 @@ ASYNCIOQUEUE_EXPORT_EXTERN_C void sdiBindObserversAndStartStreamingEngine(sdiMod
 ASYNCIOQUEUE_EXPORT_EXTERN_C void sdiCreateAndBindObservers(
     const sdiModelNameU modelName,
     const sdiModelNameU targetName);
+
+ASYNCIOQUEUE_EXPORT_EXTERN_C void sdiModelStartCallback(const CHAR16_T *const modelName,
+                                                        const double tstart,
+                                                        const double tstop);
 
 ASYNCIOQUEUE_EXPORT_EXTERN_C void sdiFastRestart(
     const sdiModelNameU modelName,
@@ -221,6 +226,12 @@ ASYNCIOQUEUE_EXPORT_EXTERN_C void sdiSetImageTypeMetadata(
     const int colorFormat,
     const size_t numChannels,
     const char_T * observerType);
+
+ASYNCIOQUEUE_EXPORT_EXTERN_C void sdiSetDateTimeTypeMetadata(
+    sdiAsyncQueueHandle hAsyncQueue,
+    const int timePointMode,
+    const int epoch,
+    const int timeScale);
 
 ASYNCIOQUEUE_EXPORT_EXTERN_C void sdiAsyncRepoSetSignalExportSettings(
     sdiAsyncQueueHandle hAsyncQueue,

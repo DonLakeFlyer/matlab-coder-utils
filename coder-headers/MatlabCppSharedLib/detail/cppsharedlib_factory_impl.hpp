@@ -1,4 +1,4 @@
-/* Copyright 2017 The MathWorks, Inc. */
+/* Copyright 2017-2022 The MathWorks, Inc. */
 
 #ifndef CPPSHAREDLIB_FACTORY_IMPL_HPP
 #define CPPSHAREDLIB_FACTORY_IMPL_HPP
@@ -63,11 +63,11 @@ namespace matlab {
             return std::shared_ptr<MATLABApplication>(new MATLABApplication(mode, options));
         }
 
-        inline std::unique_ptr<MATLABLibrary> initMATLABLibrary(std::shared_ptr<MATLABApplication> application, const std::u16string& ctffilename) {
-            return initMATLABLibraryAsync(application, ctffilename).get();
+        inline std::unique_ptr<MATLABLibrary> initMATLABLibrary(std::shared_ptr<MATLABApplication> application, const std::u16string& ctffilename, const std::u16string& session_key) {
+            return initMATLABLibraryAsync(application, ctffilename, session_key).get();
         }
 
-        inline FutureResult<std::unique_ptr<MATLABLibrary>> initMATLABLibraryAsync(std::shared_ptr<MATLABApplication> application, const std::u16string& ctffilename) {
+        inline FutureResult<std::unique_ptr<MATLABLibrary>> initMATLABLibraryAsync(std::shared_ptr<MATLABApplication> application, const std::u16string& ctffilename, const std::u16string& session_key) {
             const std::u16string absolutePathToCTF = detail::getPathToCtf(ctffilename);
             if (absolutePathToCTF.empty())
             {
@@ -77,9 +77,9 @@ namespace matlab {
                 throw CppSharedLibException(str);
             }
             // absolutePathToCTF is intentionally passed by copy rather than by reference.
-            auto startMVMType = [&application, absolutePathToCTF]() {
+            auto startMVMType = [&application, absolutePathToCTF, session_key]() {
                 bool errFlag = false;
-                uint64_t handle = create_mvm_instance(absolutePathToCTF.c_str(), &errFlag);
+                uint64_t handle = create_mvm_instance(absolutePathToCTF.c_str(), static_cast<const char16_t*>(&session_key[0]), &errFlag);
                 if (errFlag) {
                     throw CppSharedLibException("Failed to initialize MATLABLibrary.");
                 }

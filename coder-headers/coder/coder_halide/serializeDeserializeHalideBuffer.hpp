@@ -4,9 +4,12 @@
 #define MATLAB_HALIDE_CONVERTER
 
 #include <cstring>
-#include "rtwtypes.h"
 
-#ifdef HALIDE_CODER
+#ifndef HALIDE_CODEGEN
+#include "rtwtypes.h"
+#endif
+
+#ifdef HALIDE_CODEGEN
 #include "HalideRuntime.h"
 #endif
 
@@ -43,7 +46,7 @@ halide_buffer_t matlabArrayToHalideBuffer(const T* wrapee, const int* size, cons
         hbuffer.dim[i].extent = static_cast<int32_t>(size[i]);
     }
 
-    hbuffer.host = const_cast<uint8_T*>(reinterpret_cast<const uint8_T*>(wrapee));
+    hbuffer.host = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(wrapee));
     hbuffer.type = getHalideType(wrapee);
     hbuffer.set_host_dirty(true);
     hbuffer.set_device_dirty(false);
@@ -61,7 +64,7 @@ halide_buffer_t matlabArrayToHalideBuffer(const T* wrapee, const int* min, const
         hbuffer.dim[i].stride = static_cast<int32_t>(stride[i]);
     }
 
-    hbuffer.host = const_cast<uint8_T*>(reinterpret_cast<const uint8_T*>(wrapee));
+    hbuffer.host = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(wrapee));
     hbuffer.type = getHalideType(wrapee);
     hbuffer.set_host_dirty(true);
     hbuffer.set_device_dirty(false);

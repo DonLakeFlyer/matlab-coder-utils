@@ -17,17 +17,7 @@
 
 namespace matlab {
     namespace execution { 
-
-        inline Exception::Exception() :std::exception() {}
-
         inline Exception::Exception(const std::string& msg) : message(msg) {}
-
-        inline Exception::~Exception() {}
-
-        inline Exception& Exception::operator=(const Exception& rhs) {
-            message = rhs.message;
-            return *this;
-        }
 
         inline const char* Exception::what() const NOEXCEPT { return message.c_str(); }
 

@@ -1,4 +1,4 @@
-/* Copyright 2004-2021 The MathWorks, Inc.
+/* Copyright 2004-2022 The MathWorks, Inc.
  *
  * ATTENTION! ATTENTION! ATTENTION! 
  *
@@ -112,7 +112,7 @@ public:
      */
     mwArray(const mxChar* ustr, MWObjectType T) : m_pa(0)
     {
-        auto status = mclGetMatlabString((void**)&m_pa, 1, &ustr);
+        int status = mclGetMatlabString((void**)&m_pa, 1, &ustr);
         if (status == MCLCPP_ERR)
             mwException::raise_error();
         validate();
@@ -407,7 +407,7 @@ public:
     }
     void SetStringData(const std::vector<mwUString>& data)
     {
-        auto size = data.size();
+        size_t size = data.size();
         if (size == 0)
             return;
         std::vector< const mxChar*> cdata(size);
@@ -1233,7 +1233,7 @@ public:
         std::vector<mwUString> ret(m);
         if (m > 0) {
             std::vector<const mxChar*> data(m);
-            if (array_ref_get_matlab_string(m_pa, (const mxChar**)&data[0], &m, nullptr) == MCLCPP_ERR)
+            if (array_ref_get_matlab_string(m_pa, (const mxChar**)&data[0], &m, NULL) == MCLCPP_ERR)
                 mwException::raise_error();
             for (mwSize i = 0; i < m; ++i) {
                 if (data[i])
@@ -1244,8 +1244,8 @@ public:
     }
     const mxChar* GetStringElement(mwSize index = 1) const
     {
-        const mxChar* str = nullptr;
-        if (array_ref_get_string_element(m_pa, index, &str, nullptr) == MCLCPP_ERR)
+        const mxChar* str = NULL;
+        if (array_ref_get_string_element(m_pa, index, &str, NULL) == MCLCPP_ERR)
             mwException::raise_error();
         return str;
     }
@@ -2221,4 +2221,3 @@ inline void mclcppMlfFeval(HMCRINSTANCE inst, const char* name, int nargout,
 #endif /* ifdef __cplusplus */
 
 #endif /* #ifndef _MCLCPPCLASS_H_ */
-

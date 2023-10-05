@@ -23,16 +23,24 @@ namespace matlab {
 
         class Exception : public std::exception, public matlab::Exception {
         public:
-            Exception();
-            
+            Exception() = default;
+            /**
+            * Rule of Five: define all five of these (as default). Don't worry about slicing,
+            * since the classes derived from this one either have additional data members
+            * that are trivial to construct/destroy, or have no additional data members at all.
+            * We can't simply omit the definitions, since we need to specify that the
+            * destructor is virtual.
+            */
+            Exception(const Exception&) = default;
+            Exception(Exception&&) = default;
+            Exception& operator=(const Exception&) = default;
+            Exception& operator=(Exception&&) = default;
+            virtual ~Exception() = default;
+
             /**
             * Constructor that accepts an error message
             */
             Exception(const std::string& msg);
-
-            virtual ~Exception();
-
-            Exception& operator=(const Exception& rhs);
 
             /**
             * Returns the error message

@@ -1,4 +1,4 @@
-/* Copyright 2020-2021 The MathWorks, Inc. */
+/* Copyright 2020-2022 The MathWorks, Inc. */
 
 #ifndef MATLABTYPESINTERFACE_HPP
 #define MATLABTYPESINTERFACE_HPP
@@ -17,6 +17,106 @@ typedef matlab::cpplib::MATLABLibrary MATLABControllerType;
 #include "MatlabCppSharedLib.hpp"
 typedef matlab::cpplib::MATLABLibrary MATLABControllerType;
 #endif
+
+namespace MatlabTypesInterface {
+    class ConvertToComplex {
+        public:
+        typedef matlab::data::Array result_type;
+        
+        /// If the array already contains complex numbers, do nothing
+        template <typename T>
+        result_type operator()(const matlab::data::TypedArray<std::complex<T>>& arr) {
+            return arr;
+        }
+        
+        /// Returns a converted copy of the array which contains complex numbers instead of reals
+        template <typename T,
+                  typename std::enable_if<std::is_arithmetic<T>::value &&
+                                         !std::is_same<T, bool>::value>::type* = nullptr>
+        result_type operator()(const matlab::data::TypedArray<T>& arr) {
+            matlab::data::ArrayFactory f;
+            matlab::data::TypedArray<std::complex<T>> retVal =
+                f.createArray<std::complex<T>>(arr.getDimensions());
+            auto it = retVal.begin();
+            for (const auto& elem : arr) {
+                *it = std::complex<T>(elem, 0);
+                ++it;
+            }
+            return std::move(retVal);
+        }
+        
+        /// Throws an exception if type cannot be converted to std::complex
+        template <typename T>
+        result_type operator()(const T& arr) {
+            throw std::logic_error("Cannot convert this type to complex!");
+        }
+    };
+    
+    // MDA conversion section utilities. 
+    
+    /**
+     *  @brief Converts matlab::data::Array data to std::vector for most simple types
+     *  @param propName - The name of the property in MATLAB
+     *  @return the returned vector containing the property data
+     *  @exception InvalidArrayTypeException if type is not supported by TypedArray
+     *  @exception - Exceptions can occur when calling into MATLAB. Check Doc for C++ Shared Library
+     * or C++ Engine API.
+     */
+    template <typename T>
+    inline std::vector<T> convertMDAtoVector(matlab::data::Array arr) {
+        // Convert the MDA to a TypedArray
+        matlab::data::TypedArray<T> arrTyped = arr;
+        std::vector<T> value(arrTyped.cbegin(), arrTyped.cend());
+        return value;
+    }
+    
+    /// Template specialization - Gets a vector of strings
+    template <>
+    inline std::vector<std::u16string> convertMDAtoVector(matlab::data::Array strArray) {
+        size_t numel = strArray.getNumberOfElements();
+        std::vector<std::u16string> strVector(numel);
+        matlab::data::TypedArray<matlab::data::MATLABString> tempStringArray(strArray);
+
+        // Copy each MATLAB string to the std::vector, if element has a value
+        for (size_t k = 0; k < numel; k++) {
+            matlab::data::MATLABString tempString = tempStringArray[k];
+            if (tempString.has_value()) {
+                strVector.at(k) = *tempString;  // Access is done this way to support "MATLABString = optional<String> = std::basic_string<char16_t>"
+            } else {
+                strVector.at(k) = u"";
+            }
+        }
+        return strVector;
+    }
+
+    
+    /// Used to convert an MDA containing a simple scalar to its base type
+    template <typename T>
+    inline T convertMDAtoScalar(matlab::data::Array arr) {
+        // Convert the MDA to a TypedArray
+        matlab::data::TypedArray<T> arrTyped = arr;
+        T value = arr[0];
+        return value;
+    }
+
+    /// Template specialization - Converts an MDA containing a string to a string. Used for char array as well.
+    template <>
+    inline std::u16string convertMDAtoScalar(matlab::data::Array arr) {
+        if (arr.getType() == matlab::data::ArrayType::CHAR) {
+            matlab::data::CharArray charResult(arr);
+            return charResult.toUTF16();
+        } else {
+            matlab::data::TypedArray<matlab::data::MATLABString> stringResult(arr);
+            matlab::data::MATLABString str = stringResult[0];
+            if (str.has_value()) {
+                return *str;  // Access is done this way to support "MATLABString = optional<String> = std::basic_string<char16_t>"
+            } else {
+                return u"";
+            }
+        }
+    }
+
+}
 
 template <typename ControllerType>
 class MATLABObject {
@@ -37,40 +137,6 @@ class MATLABObject {
         : m_matlabPtr(matlabPtr)
         , m_object(obj) {
     }
-
-  private:
-    class ConvertToComplex {
-      public:
-        typedef matlab::data::Array result_type;
-
-        /// If the array already contains complex numbers, do nothing
-        template <typename T>
-        result_type operator()(const matlab::data::TypedArray<std::complex<T>>& arr) {
-            return arr;
-        }
-
-        /// Returns a converted copy of the array which contains complex numbers instead of reals
-        template <typename T,
-                  typename std::enable_if<std::is_arithmetic<T>::value &&
-                                          !std::is_same<T, bool>::value>::type* = nullptr>
-        result_type operator()(const matlab::data::TypedArray<T>& arr) {
-            matlab::data::ArrayFactory f;
-            matlab::data::TypedArray<std::complex<T>> retVal =
-                f.createArray<std::complex<T>>(arr.getDimensions());
-            auto it = retVal.begin();
-            for (const auto& elem : arr) {
-                *it = std::complex<T>(elem, 0);
-                ++it;
-            }
-            return std::move(retVal);
-        }
-
-        /// Throws an exception if type cannot be converted to std::complex
-        template <typename T>
-        result_type operator()(const T& arr) {
-            throw std::logic_error("Cannot convert this type to complex!");
-        }
-    };
 
   protected:
     std::shared_ptr<ControllerType> m_matlabPtr = nullptr;
@@ -104,7 +170,7 @@ class MATLABObject {
     template <typename T>
     inline std::complex<T> MATLABGetComplexScalarProperty(std::u16string propName) {
         matlab::data::Array mdaVal = MATLABGetArrayProperty(propName);
-        ConvertToComplex v;
+        MatlabTypesInterface::ConvertToComplex v;
         matlab::data::Array convertedVal = matlab::data::apply_visitor(mdaVal, v);
         matlab::data::TypedArray<std::complex<T>> value(convertedVal);
         return value[0];
@@ -287,7 +353,7 @@ inline std::u16string MATLABObject<MATLABControllerType>::MATLABGetScalarPropert
         matlab::data::TypedArray<matlab::data::MATLABString> stringResult(result);
         matlab::data::MATLABString str = stringResult[0];
         if (str.has_value()) {
-            return *str;
+            return *str;  // Access is done this way to support "MATLABString = optional<String> = std::basic_string<char16_t>"
         } else {
             return u"";
         }
@@ -318,7 +384,7 @@ inline std::vector<std::u16string> MATLABObject<MATLABControllerType>::MATLABGet
     for (size_t k = 0; k < numel; k++) {
         matlab::data::MATLABString tempString = tempStringArray[k];
         if (tempString.has_value()) {
-            strVector.at(k) = *tempString;
+            strVector.at(k) = *tempString;  // Access is done this way to support "MATLABString = optional<String> = std::basic_string<char16_t>"
         } else {
             strVector.at(k) = u"";
         }

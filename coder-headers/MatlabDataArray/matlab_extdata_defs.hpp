@@ -15,6 +15,9 @@ namespace matlab {
         template <typename T>
         using buffer_ptr_t = std::unique_ptr<T[], buffer_deleter_t>;
 
+        template <typename T>
+        using user_buffer_ptr_t = std::unique_ptr<T[], buffer_deleter_t>;
+
         using void_buffer_ptr_t = std::unique_ptr<void, buffer_deleter_t>;
 
 

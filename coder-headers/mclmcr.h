@@ -1,7 +1,7 @@
 /*
  * PUBLISHed header for libmclmcr, the mclmcr library.
  *
- * Copyright 1984-2020 The MathWorks, Inc.
+ * Copyright 1984-2022 The MathWorks, Inc.
  */
 
 #if defined(_MSC_VER)
@@ -91,7 +91,8 @@ LIBMWMCLMCR_API_EXTERN_C bool mclInitializeComponentInstanceNonEmbeddedStandalon
                                                                                   const char* component_name,
                                                                                   mccTargetType ttype,
                                                                                   mclOutputHandlerFcn error_handler,
-                                                                                  mclOutputHandlerFcn print_handler);
+                                                                                  mclOutputHandlerFcn print_handler,
+                                                                                  const char* session_key);
 
 
 LIBMWMCLMCR_API_EXTERN_C bool mclInitializeInstanceWithoutComponent(HMCRINSTANCE* inst,
@@ -110,7 +111,8 @@ LIBMWMCLMCR_API_EXTERN_C bool mclInitializeComponentInstanceCtfFileToCache(HMCRI
 LIBMWMCLMCR_API_EXTERN_C bool mclInitializeComponentInstanceEmbedded(HMCRINSTANCE* inst,
                                                                      mclOutputHandlerFcn error_handler,
                                                                      mclOutputHandlerFcn print_handler,
-                                                                     mclCtfStream ctfStream);
+                                                                     mclCtfStream ctfStream,
+                                                                     const char* session_key);
 
 
 LIBMWMCLMCR_API_EXTERN_C bool mclInitializeComponentInstanceWithCallbk(HMCRINSTANCE* inst,

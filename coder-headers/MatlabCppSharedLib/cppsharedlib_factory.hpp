@@ -1,4 +1,4 @@
-/* Copyright 2017 The MathWorks, Inc. */
+/* Copyright 2017-2022 The MathWorks, Inc. */
 
 #ifndef CPPSHAREDLIB_FACTORY_HPP
 #define CPPSHAREDLIB_FACTORY_HPP
@@ -19,10 +19,10 @@ namespace matlab {
             const std::vector<std::u16string>& options = std::vector<std::u16string>());
 
         std::unique_ptr<MATLABLibrary> initMATLABLibrary(
-            std::shared_ptr<MATLABApplication> application, const std::u16string& ctffilename);
+            std::shared_ptr<MATLABApplication> application, const std::u16string& ctffilename, const std::u16string& session_key = std::u16string());
 
         FutureResult<std::unique_ptr<MATLABLibrary>> initMATLABLibraryAsync(
-            std::shared_ptr<MATLABApplication> application, const std::u16string& ctffilename);
+            std::shared_ptr<MATLABApplication> application, const std::u16string& ctffilename, const std::u16string& session_key = std::u16string());
 
         int runMain(std::function<int(std::shared_ptr<MATLABApplication>, int, const char**)> , 
             std::shared_ptr<MATLABApplication>&& appsession,
