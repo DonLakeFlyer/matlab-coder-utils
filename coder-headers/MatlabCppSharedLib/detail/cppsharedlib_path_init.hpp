@@ -1,4 +1,4 @@
-/* Copyright 2017 The MathWorks, Inc. */
+/* Copyright 2017-2022 The MathWorks, Inc. */
 
 #ifndef CPPSHARED_LIB_PATH_INIT_HPP
 #define CPPSHARED_LIB_PATH_INIT_HPP
@@ -66,14 +66,29 @@ namespace detail {
         }
     }
     
+    inline std::string narrow(const std::wstring & wstr)
+    {
+        static const std::locale loc("");
+        const wchar_t * wcFrom = wstr.c_str();
+        const std::size_t len = wstr.size();
+        std::vector<char> cbuf(len + 1);
+        std::use_facet<std::ctype<wchar_t>>(loc).narrow(wcFrom, wcFrom + len, '_', cbuf.data());
+        return std::string(cbuf.data(), cbuf.data() + len);
+    }
+    
     inline bool setEnvVarW(const std::wstring & varName, const std::wstring & varValue)
     {
         BOOL ret = SetEnvironmentVariableW(varName.c_str(), varValue.c_str());
         if (!ret)
         {
             DWORD err = GetLastError();
-            std::cerr << "Attempt to set environment variable '" << std::string(varName.cbegin(), varName.cend()) << "' "
-                << "to '" << std::string(varValue.cbegin(), varValue.cend()) << "' failed with error code " << err << std::endl;
+            std::string sVarName = narrow(varName);
+            std::string sVarValue = narrow(varValue);
+            std::cerr << "Attempt to set environment variable '";
+            std::cerr << sVarName;
+            std::cerr << "' to '";
+            std::cerr << sVarValue;
+            std::cerr << "' failed with error code " << err << std::endl;
         }
         return ret ? true : false;
     }
@@ -222,8 +237,7 @@ namespace detail {
     
     inline std::u16string getValueFromEnvVar(const std::u16string &varName)
     {
-        // This is fine because environment variable names are always ASCII.
-        std::string sVarName(varName.cbegin(), varName.cend());
+        std::string sVarName = matlab::execution::convertUTF16StringToUTF8String(varName);
         const char * val = std::getenv(sVarName.c_str());
         if ( val == 0 ) {
             return std::u16string();
@@ -235,8 +249,7 @@ namespace detail {
     
     inline bool setEnvVar(const std::u16string & varName, const std::u16string & varValue)
     {
-        // This is fine because environment variable names are always ASCII.
-        std::string sVarName(varName.cbegin(), varName.cend());
+        std::string sVarName = matlab::execution::convertUTF16StringToUTF8String(varName);
         std::string sVarValue = matlab::execution::convertUTF16StringToUTF8String(varValue);
         int ret = setenv(sVarName.c_str(), sVarValue.c_str(), /*overwrite=*/ 1);
         if (ret == -1)

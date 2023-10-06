@@ -6,7 +6,7 @@
 #ifdef _WIN32
 
 const wchar_t * const MATLAB_CPP_SHARED_LIB_BASE_NAME = L"libMatlabCppSharedLib";
-const wchar_t * const MATLAB_CPP_SHARED_LIB_SUFFIX = L"9_13.dll";
+const wchar_t * const MATLAB_CPP_SHARED_LIB_SUFFIX = L"23_2.dll";
 
 #endif // _WIN32
 

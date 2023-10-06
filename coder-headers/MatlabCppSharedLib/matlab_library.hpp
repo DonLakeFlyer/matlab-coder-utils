@@ -1,4 +1,4 @@
-/* Copyright 2017 The MathWorks, Inc. */
+/* Copyright 2017-2022 The MathWorks, Inc. */
 
 #ifndef MATLAB_LIBRARY_HPP
 #define MATLAB_LIBRARY_HPP
@@ -33,7 +33,7 @@ namespace matlab {
 
         private:
             
-            friend FutureResult<std::unique_ptr<MATLABLibrary>> initMATLABLibraryAsync(std::shared_ptr<MATLABApplication> application, const std::u16string& ctffilename);
+            friend FutureResult<std::unique_ptr<MATLABLibrary>> initMATLABLibraryAsync(std::shared_ptr<MATLABApplication> application, const std::u16string& ctffilename, const std::u16string& session_key);
            /**
             * Constructor
             *

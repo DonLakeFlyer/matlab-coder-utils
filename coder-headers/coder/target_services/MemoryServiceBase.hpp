@@ -1,4 +1,4 @@
-/* Copyright 2013 The MathWorks, Inc. */
+/* Copyright 2013-2022 The MathWorks, Inc. */
 
 #ifndef coder_tgtsvc_MemoryServiceBase_hpp
 #define coder_tgtsvc_MemoryServiceBase_hpp
@@ -69,7 +69,7 @@ public:
     }
     uint8_t poolCount() const { return poolCount_; }
 
-    void *alloc(size_t request) throw() {
+    void *alloc(size_t request) noexcept {
 
         uint8_t poolIdx = whichPool(request);
         detail::Chunk  *c = NULL;

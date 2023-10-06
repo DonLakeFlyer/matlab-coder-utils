@@ -51,8 +51,7 @@ class NameListImpl;
 }
 
 /**
- * The ArrayFactory base class provides all of the general APIs that
- * each of the concrete factories needs to support.
+ * The ArrayFactory class provides all of the APIs to create MATLAB Data Arrays
  */
 class ArrayFactory {
   public:
@@ -705,6 +704,7 @@ class ArrayFactory {
         return detail::Access::createObj<SparseArray<T>>(impl);
     }
 
+    
 
   protected:
     std::shared_ptr<impl::ArrayFactoryImpl> pImpl;

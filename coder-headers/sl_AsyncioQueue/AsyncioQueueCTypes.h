@@ -144,6 +144,7 @@ typedef struct {
     sdiEnumerationBaseClass enumerationBaseClass;
     sdiLeafSignalDataTypeClass signalDataTypeClass;
     int byteOffset;
+    int varDimsOffset;
     sdiComplexity complexity;
     sdiDims dims;
     sdiDimsMode dimsMode;
@@ -162,6 +163,7 @@ typedef struct {
     int rawDataTypeId;
     sdiAsyncRepoDataTypeHandle hDataType;
     int byteOffset;
+    int varDimsOffset;
     sdiComplexity complexity;
     sdiDims dims;
     sdiDimsMode dimsMode;

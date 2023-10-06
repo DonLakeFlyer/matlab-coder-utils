@@ -1,4 +1,4 @@
-/* Copyright 2017-2021 The MathWorks, Inc. */
+/* Copyright 2017-2022 The MathWorks, Inc. */
 
 #ifndef MATLAB_EXECUTION_INTERFACE_IMPL_HPP
 #define MATLAB_EXECUTION_INTERFACE_IMPL_HPP
@@ -89,14 +89,12 @@ namespace {
         switch (excType) {
         case ::detail::ExceptionType::CANCELLED:{
             const char* message = reinterpret_cast<const char*>(msg);
-            matlab::execution::CancelledException exception(message);
-            prom->set_exception(std::make_exception_ptr<matlab::execution::CancelledException>(exception));
+            prom->set_exception(std::make_exception_ptr<matlab::execution::CancelledException>(matlab::execution::CancelledException(message)));
             break;
         }
         case ::detail::ExceptionType::INTERRUPTED: {
             const char* message = reinterpret_cast<const char*>(msg);
-            matlab::execution::InterruptedException exception(message);
-            prom->set_exception(std::make_exception_ptr<matlab::execution::InterruptedException>(exception));
+            prom->set_exception(std::make_exception_ptr<matlab::execution::InterruptedException>(matlab::execution::InterruptedException(message)));
             break;
         }
         case ::detail::ExceptionType::EXECUTION:
@@ -105,25 +103,21 @@ namespace {
             matlab::data::Array mdaException = matlab::data::detail::Access::createObj<matlab::data::Array>(exceptionImpl);
             matlab::data::StructArray mException(mdaException);
             if (excType == ::detail::ExceptionType::SYNTAX) {
-                matlab::execution::MATLABSyntaxException exception = createMATLABSyntaxException(mException);
-                prom->set_exception(std::make_exception_ptr<matlab::execution::MATLABSyntaxException>(exception));
+                prom->set_exception(std::make_exception_ptr<matlab::execution::MATLABSyntaxException>(createMATLABSyntaxException(mException)));
             }
             else {
-                matlab::execution::MATLABExecutionException exception(createMATLABExecutionException(mException));
-                prom->set_exception(std::make_exception_ptr<matlab::execution::MATLABExecutionException>(exception));
+                prom->set_exception(std::make_exception_ptr<matlab::execution::MATLABExecutionException>(createMATLABExecutionException(mException)));
             }
             break;
         }
         case ::detail::ExceptionType::OTHER: {
             const char* message = reinterpret_cast<const char*>(msg);
-            matlab::execution::Exception exception(message);
-            prom->set_exception(std::make_exception_ptr<matlab::execution::Exception>(exception));
+            prom->set_exception(std::make_exception_ptr<matlab::execution::Exception>(matlab::execution::Exception(message)));
             break;
         }
         case ::detail::ExceptionType::STOPPED: {
             const char* message = reinterpret_cast<const char*>(msg);
-            matlab::execution::MATLABNotAvailableException exception(message);
-            prom->set_exception(std::make_exception_ptr<matlab::execution::MATLABNotAvailableException>(exception));
+            prom->set_exception(std::make_exception_ptr<matlab::execution::MATLABNotAvailableException>(matlab::execution::MATLABNotAvailableException(message)));
             break;
         }
         break;

@@ -1,7 +1,7 @@
 /*
  * VideoDefs.h - Definitions for video I/O
  *
- *  Copyright 1995-2013 The MathWorks, Inc.
+ *  Copyright 1995-2023 The MathWorks, Inc.
  */
 
 #ifndef VIDEODEFS_H
@@ -38,6 +38,7 @@ typedef enum {
     FILETYPE_WMV,
     FILETYPE_WMA,
     FILETYPE_FLAC,
+    FILETYPE_MP3,
     FILETYPE_OGG,
     FILETYPE_MPEG4,
     FILETYPE_MJ2000,

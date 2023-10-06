@@ -2746,7 +2746,7 @@ mclCtfStream mclGetEmbeddedCtfStream_proxy(void *a0);
 EXTERN_C
 bool mclInitializeComponentInstanceNonEmbeddedStandalone_proxy(
     HMCRINSTANCE *a0, const char *a1, const char *a2, mccTargetType a3, 
-    mclOutputHandlerFcn a4, mclOutputHandlerFcn a5);
+    mclOutputHandlerFcn a4, mclOutputHandlerFcn a5, const char *a6);
 
 /**This function is for INTERNAL USE ONLY.**/
 EXTERN_C
@@ -2762,7 +2762,8 @@ bool mclInitializeComponentInstanceCtfFileToCache_proxy(HMCRINSTANCE *a0,
 /**This function is for INTERNAL USE ONLY.**/
 EXTERN_C
 bool mclInitializeComponentInstanceEmbedded_proxy(HMCRINSTANCE *a0, 
-    mclOutputHandlerFcn a1, mclOutputHandlerFcn a2, mclCtfStream a3);
+    mclOutputHandlerFcn a1, mclOutputHandlerFcn a2, mclCtfStream a3, 
+    const char *a4);
 
 /**This function is for INTERNAL USE ONLY.**/
 EXTERN_C
